@@ -3,8 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/go-redis/redis/v8"
 	"time"
+
+	"github.com/go-redis/redis/v8"
 )
 
 var rdb *redis.Client
@@ -12,7 +13,7 @@ var rdb *redis.Client
 // 初始化连接
 func initClient() (err error) {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:12379",
+		Addr:     "localhost:6379",
 		Password: "",  // no password set
 		DB:       0,   // use default DB
 		PoolSize: 100, // 连接池大小
