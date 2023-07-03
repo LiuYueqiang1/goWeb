@@ -50,7 +50,7 @@ func main() {
 	//}
 	//simpleHttpGet("www.baidu.com")
 	//simpleHttpGet("http://www.bilibili.com")
-	r := gin.New()
+	r := gin.New() // gin.Default() 代替注册中间件
 	r.Use(GinLogger(logger), GinRecovery(logger, true))
 	r.GET("/hello", func(c *gin.Context) {
 		c.String(http.StatusOK, "hello q1mi!")
@@ -66,8 +66,12 @@ func InitLogger() {
 	//我们将修改上述部分中的Logger代码，并重写InitLogger()方法
 	writeSyncer := getLogWriter()
 	encoder := getEncoder()
+	// zapcore.Core`需要三个配置——`Encoder`，`WriteSyncer`，`LogLevel
+	//**Encoder**:编码器(如何写入日志)。
+	//**WriterSyncer** ：指定日志将写到哪里去。
+	//**Log Level**：哪种级别的日志将被写入。
 	core := zapcore.NewCore(encoder, writeSyncer, zapcore.DebugLevel)
-
+	//使用zap.new()手动传输所有配置
 	logger = zap.New(core, zap.AddCaller())
 	sugarLogger = logger.Sugar()
 }
