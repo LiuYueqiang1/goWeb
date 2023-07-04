@@ -2,3 +2,9 @@
 {"level":"DEBUG","time":"2023-06-29T21:44:01.765+0800","caller":"web_app/main.go:41","msg":"logger init success..."}
 {"level":"INFO","time":"2023-06-29T22:06:48.797+0800","caller":"web_app/main.go:77","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2023-06-29T22:06:50.375+0800","caller":"web_app/main.go:86","msg":"Server exiting"}
+{"level":"DEBUG","time":"2023-07-04T16:23:03.587+0800","caller":"web_app/main.go:41","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-04T16:23:16.043+0800","caller":"web_app/main.go:77","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-04T16:23:16.043+0800","caller":"web_app/main.go:86","msg":"Server exiting"}
+{"level":"DEBUG","time":"2023-07-04T16:29:57.079+0800","caller":"web_app/main.go:41","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-04T16:30:06.519+0800","caller":"web_app/main.go:77","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-04T16:30:06.519+0800","caller":"web_app/main.go:86","msg":"Server exiting"}
