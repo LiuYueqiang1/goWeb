@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"bluebell.com/bluebell/settings"
+
 	"github.com/spf13/viper"
 
 	"github.com/gin-gonic/gin"
@@ -18,12 +20,12 @@ import (
 )
 
 // InitLogger 初始化Logger
-func InitLogger() (err error) {
+func InitLogger(cfg *settings.LogConfig) (err error) {
 	writeSyncer := getLogWriter(
-		viper.GetString("log.filename"),
-		viper.GetInt("log.max_size"),
-		viper.GetInt("log.max_backups"),
-		viper.GetInt("log.max_age"),
+		cfg.Filename,
+		cfg.MaxSize,
+		cfg.MaxBackups,
+		cfg.MaxAge,
 	)
 	encoder := getEncoder()
 	var l = new(zapcore.Level)

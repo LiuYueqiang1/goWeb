@@ -636,7 +636,44 @@ func Setup() *gin.Engine {
 
 优雅关机(在主函数zhong)
 
+## web2 改进
 
+```settings```将所有的配置信息都制作一个结构体变量，并且反序列化到结构体中，这样每次直接从结构体中取值即可。
+
+定义一个全局的变量，将配置信息反序列化到 Conf 变量中。
+
+直接在其它文件夹中调用这个结构体中的变量即可，避免频繁的调用配置信息使用```viper```库
+
+```go
+//直接寻找
+viper.SetConfigFile("./conf/config.yaml") // 指定配置文件路径 可以代替下面两行。
+//通过路径寻找这个名称的配置文件
+viper.SetConfigName("config") // 指定配置文件名称（不需要带后缀）
+viper.SetConfigType("yaml")   // 指定配置文件类型(专用于从远程获取文件的配置信息时指定配置）etcd 
+viper.AddConfigPath(".")      // 指定查找配置文件的路径（这里使用相对路径）
+```
+
+## os库
+
+```os.Args[0]```指的是当前路径
+
+```os.Args[1]```指的是当前目录下的文件夹
+
+```go
+if len(os.Args) < 2 {
+   fmt.Println("need config file.eg: bluebell config.yaml")
+   return
+}
+// 加载配置
+if err := setting.Init(os.Args[1]); err != nil {
+	fmt.Printf("load config failed, err:%v\n", err)
+	return
+}
+```
+
+## flag库 在任何路径下执行文件
+
+[Go语言标准库flag基本使用 | 李文周的博客 (liwenzhou.com)](https://www.liwenzhou.com/posts/Go/flag/)
 
 # bulebell项目实战
 

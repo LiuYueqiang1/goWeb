@@ -21,3 +21,12 @@
 {"level":"DEBUG","time":"2023-07-04T17:01:32.463+0800","caller":"bluebell/main.go:38","msg":"logger init success..."}
 {"level":"INFO","time":"2023-07-04T17:01:40.180+0800","caller":"bluebell/main.go:75","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2023-07-04T17:01:40.180+0800","caller":"bluebell/main.go:83","msg":"Server exiting"}
+{"level":"DEBUG","time":"2023-07-04T22:14:01.370+0800","caller":"bluebell/main.go:43","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-04T22:14:33.741+0800","caller":"bluebell/main.go:80","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-04T22:14:33.741+0800","caller":"bluebell/main.go:88","msg":"Server exiting"}
+{"level":"DEBUG","time":"2023-07-05T09:06:22.414+0800","caller":"bluebell/main.go:43","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-05T09:10:29.397+0800","caller":"bluebell/main.go:80","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-05T09:10:29.398+0800","caller":"bluebell/main.go:88","msg":"Server exiting"}
+{"level":"DEBUG","time":"2023-07-05T09:10:37.650+0800","caller":"bluebell/main.go:43","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-05T09:10:45.114+0800","caller":"bluebell/main.go:80","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-05T09:10:45.114+0800","caller":"bluebell/main.go:88","msg":"Server exiting"}

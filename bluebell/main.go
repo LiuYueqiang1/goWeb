@@ -23,13 +23,18 @@ import (
 )
 
 func main() {
+	//if len(os.Args) < 2 {
+	//	fmt.Println("need config file.eg: bluebell config.yaml")
+	//	return
+	//}
 	//1、加载配置信息 viper
+	//运行的目录在bluebell下，故需要去它的下一级目录找 os.Args[1]
 	if err := settings.Init(); err != nil {
 		fmt.Printf("init settings failed,err:%v/n", err)
 		return
 	}
 	//2、初始化日志 zap
-	if err := logger.InitLogger(); err != nil {
+	if err := logger.InitLogger(settings.Conf.LogConfig); err != nil {
 		fmt.Printf("init logger failed,err:%v/n", err)
 		return
 	}
@@ -37,7 +42,7 @@ func main() {
 	defer zap.L().Sync()
 	zap.L().Debug("logger init success...")
 	//3、初始化MySQL连接
-	if err := mysql.Init(); err != nil {
+	if err := mysql.Init(settings.Conf.MySQLConfig); err != nil {
 		fmt.Printf("init mysql failed,err:%v/n", err)
 		return
 	}
