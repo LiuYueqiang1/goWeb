@@ -677,7 +677,7 @@ if err := setting.Init(os.Args[1]); err != nil {
 
 # bulebell项目实战
 
-## 课时30
+## 30用户表结构设计
 
 用户表结构设计。
 
@@ -685,7 +685,7 @@ if err := setting.Init(os.Args[1]); err != nil {
 
 构建数据表。在models文件夹下的creat_table里面
 
-## 课时31
+## 31雪花算法
 
 不使用自增id作为用户id的原因：
 
@@ -697,7 +697,7 @@ if err := setting.Init(os.Args[1]); err != nil {
 
 ![img_1](F:\goland\go_project\go_Web81\goWeb\bluebell\picture\img_1.png)
 
-## 课时32 注册业务流程
+## 32 注册业务流程
 
 ![image-20230703154907993](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230703154907993.png)
 
@@ -836,6 +836,10 @@ func SignUp(p *models.ParmSignUp) (err error) {
    //2、生成UID
    userID := snowflake.GenID()
    // 构造一个user实例
+    // **********
+	// 将网页中拿到的用户名密码反序列化到 models.ParmSignUp 结构体中
+	// 再将 models.ParmSignUp 中的值赋给定义的 models.User 的结构体中
+	// **********
    user := &models.User{
       UserID:   userID,
       Username: p.Username,
@@ -971,6 +975,168 @@ func removeTopStruct(fields map[string]string) map[string]string {
       res[field[strings.Index(field, ".")+1:]] = err
    }
    return res
+}
+```
+
+## 36使用mode控制日志输出位置
+
+```logger```下的```logger```文件
+
+```go
+func InitLogger(cfg *settings.LogConfig, mode string) (err error) {
+    ...
+var core zapcore.Core
+if mode == "dev" {
+   // 定义 进入开发模式，日志输出到终端 的变量
+   consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
+   //两种情况
+    core = zapcore.NewTee(
+      //输出到文件
+      zapcore.NewCore(encoder, writeSyncer, l),
+      //输出到终端
+      zapcore.NewCore(consoleEncoder, zapcore.Lock(os.Stdout), zapcore.DebugLevel),
+   )
+} else {
+   core = zapcore.NewCore(encoder, writeSyncer, l)
+}
+    ...
+}
+```
+
+如果是发布者 ```release```模式，则不会输出到终端以下信息
+
+```go
+[GIN-debug] POST   /signup                   --> bluebell.com/bluebell/controllers.SignUpHandler (3 handlers)
+[GIN-debug] GET    /                         --> bluebell.com/bluebell/routes.Setup.func1 (3 handlers)
+```
+
+```routes```文件下的```route```
+
+```go
+func Setup(mode string) *gin.Engine {
+   if mode == gin.ReleaseMode {
+      gin.SetMode(gin.ReleaseMode) // gin设置程发布者模式
+   }
+	...
+}
+```
+
+```main.go```主函数中传入```settings.Conf.Mode```
+
+## 37登录功能实现
+
+### ```routes.routes```登录请求
+
+```go
+// 登录
+r.POST("/login", controllers.LoginHandler)
+```
+
+### ```controllers.user```登录请求响应函数
+
+获取参数和参数校验并 记录错误信息
+
+业务处理
+
+返回响应
+
+```go
+func LoginHandler(c *gin.Context) {
+   //1、获取参数和参数校验
+   p := new(models.ParmLogin)
+   if err := c.ShouldBindJSON(p); err != nil {
+      //请求参数、有误直接返回响应
+      // 记录日志
+      zap.L().Error("Login with invalid param", zap.Error(err))
+      // 判断err是不是validator.ValidationErrors 类型
+       // 获得应用程序的错误消息的所有信息
+      errs, ok := err.(validator.ValidationErrors)
+      if !ok {
+         c.JSON(http.StatusOK, gin.H{
+            "msg": err.Error(),
+         })
+         return
+      }
+      c.JSON(http.StatusOK, gin.H{
+         "msg": removeTopStruct(errs.Translate(trans)),
+      })
+      return
+   }
+   //2、业务处理
+   if err := logic.Login(p); err != nil {
+      zap.L().Error("logic.Login failed", zap.String("username:", p.Username), zap.Error(err))
+      c.JSON(http.StatusOK, gin.H{
+         "msg": "用户名或密码错误",
+      })
+      return
+   }
+   //3、返回响应
+   c.JSON(http.StatusOK, gin.H{
+      "msg": "success",
+   })
+}
+```
+
+### ```logic.user```登录业务处理
+
+获取到网页中请求的用户名和密码 加入到结构体中
+
+判断与数据库中的是否相等
+
+```go
+func Login(p *models.ParmLogin) (err error) {
+   user := &models.User{
+      Username: p.Username,
+      Password: p.Password,
+   }
+   if err := mysql.Login(user); err != nil {
+      return err
+   }
+   return
+}
+```
+
+### ```mysql.user```数据库登录时的操作
+
+使用```sql```语句查看数据库中是否存在这个用户
+
+判断密码是否正确
+
+密码加密
+
+```go
+var (
+	ErrorUserExist       = errors.New("用户已存在")
+	ErrorUserNotExist    = errors.New("用户不存在")
+	ErrorInvalidPassword = errors.New("用户名或密码错误")
+)
+// Login
+func Login(user *models.User) (err error) {
+   oPassword := user.Password // 用户登录的密码
+   sqlStr := `select user_id, username, password from user where username=?`
+   err = db.Get(user, sqlStr, user.Username)
+   // var ErrNoRows = errors.New("sql: no rows in result set")
+   if err == sql.ErrNoRows {
+      // 打印用户不存在 已经定义为全局变量
+      return ErrorUserNotExist
+   }
+   if err != nil {
+      // 查询数据库失败
+      return err
+   }
+   // 判断密码是否正确
+   password := encryptPassword(oPassword)
+   if password != user.Password {
+      // 如果密码不相等，打印用户名或密码错误 已经定义为全局变量
+      return ErrorInvalidPassword
+   }
+   return
+}
+// encryptPassword 密码加密
+func encryptPassword(oPassword string) string {
+	h := md5.New()
+	h.Write([]byte(serect))
+	return hex.EncodeToString(h.Sum([]byte(oPassword)))
 }
 ```
 

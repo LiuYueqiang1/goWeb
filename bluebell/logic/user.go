@@ -18,6 +18,10 @@ func SignUp(p *models.ParmSignUp) (err error) {
 	//2、生成UID
 	userID := snowflake.GenID()
 	// 构造一个user实例
+	// **********
+	// 将网页中拿到的用户名密码反序列化到 models.ParmSignUp 结构体中
+	// 再将 models.ParmSignUp 中的值赋给定义的 models.User 的结构体中
+	// **********
 	user := &models.User{
 		UserID:   userID,
 		Username: p.Username,
@@ -25,4 +29,15 @@ func SignUp(p *models.ParmSignUp) (err error) {
 	}
 	//3、保存进数据库
 	return mysql.InsertUser(user)
+}
+
+func Login(p *models.ParmLogin) (err error) {
+	user := &models.User{
+		Username: p.Username,
+		Password: p.Password,
+	}
+	if err := mysql.Login(user); err != nil {
+		return err
+	}
+	return
 }
