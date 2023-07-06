@@ -9,12 +9,15 @@ import (
 	"syscall"
 	"time"
 
+	"bluebell.com/bluebell/controllers"
+
+	"bluebell.com/bluebell/pkg/snowflake"
+
+	"fmt"
+
 	"bluebell.com/bluebell/dao/mysql"
 	"bluebell.com/bluebell/dao/redis"
 	"bluebell.com/bluebell/routes"
-	"github.com/spf13/viper"
-
-	"fmt"
 
 	"bluebell.com/bluebell/logger"
 	"go.uber.org/zap"
@@ -54,11 +57,23 @@ func main() {
 	}
 	fmt.Println("init redis succes")
 	defer redis.Close()
+	// 雪花算法
+	if err := snowflake.Init(settings.Conf.StartTime, settings.Conf.MachineID); err != nil {
+		fmt.Printf("init snowflake failed, err:%v\n", err)
+		return
+	}
+	fmt.Println(snowflake.GenID())
+
+	// 初始化gin框架内置的校验器使用的翻译器
+	if err := controllers.InitTrans("zh"); err != nil {
+		fmt.Printf("init calidator trans failed,err:%v\n", err)
+		return
+	}
 	//5、注册路由
 	r := routes.Setup()
 	//6、启动服务
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%d", viper.GetInt("app.port")),
+		Addr:    fmt.Sprintf(":%d", settings.Conf.Port),
 		Handler: r,
 	}
 
