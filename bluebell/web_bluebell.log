@@ -181,3 +181,21 @@
 {"level":"INFO","time":"2023-07-06T19:18:10.899+0800","caller":"logger/logger.go:88","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.001053}
 {"level":"INFO","time":"2023-07-06T19:18:34.155+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2023-07-06T19:18:34.156+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-08T20:38:35.821+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-08T20:38:35.874+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"ERROR","time":"2023-07-08T20:38:37.909+0800","caller":"mysql/mysql.go:29","msg":"connect DB failed","error":"dial tcp 127.0.0.1:3306: connectex: No connection could be made because the target machine actively refused it."}
+{"level":"INFO","time":"2023-07-08T20:39:43.840+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-08T20:39:43.861+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-08T20:43:07.693+0800","caller":"logger/logger.go:88","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0268967}
+{"level":"INFO","time":"2023-07-08T20:43:22.521+0800","caller":"logger/logger.go:88","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0016948}
+{"level":"INFO","time":"2023-07-08T20:44:37.209+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-08T20:44:37.209+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-08T20:44:51.980+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-08T20:44:51.997+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-08T20:45:02.315+0800","caller":"logger/logger.go:88","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0058339}
+{"level":"INFO","time":"2023-07-08T21:00:52.361+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-08T21:00:52.378+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-08T21:34:35.524+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-08T21:34:35.636+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-08T21:34:46.588+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-08T21:34:46.589+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}

@@ -1140,3 +1140,272 @@ func encryptPassword(oPassword string) string {
 }
 ```
 
+## 38定义业务状态码并封装相应方法
+
+将```controllers```中的响应封装起来
+
+### 创建```response.go```文件存放响应
+
+- ```gin.H```就是一个map函数
+- H is a shortcut for ```map[string]any```
+
+```go
+package controllers
+
+import (
+   "net/http"
+
+   "github.com/gin-gonic/gin"
+)
+
+/*
+{
+"code":1001,//程序中的错误码
+“msg":xx, //提示信息
+”data" :{} //程序中的提示数据
+}
+*/
+
+type ResponseData struct {
+   Code ResCode     `json:"code"`
+   Msg  interface{} `json:"msg"`
+   Data interface{} `json:"data"`
+}
+
+func ResponseError(c *gin.Context, code ResCode) {
+    可以写为这种形式，或者自定义结构体进行存储
+   //gin.H{
+   // "code": "xx",
+   // "msg":  "xx",
+   // "data": "xx",
+   //}
+   // 替换为
+   rd := &ResponseData{
+      Code: code,
+      Msg:  code.Msg(),
+      Data: nil,
+   }
+
+   c.JSON(http.StatusOK, rd)
+}
+
+func ResponseSuccess(c *gin.Context, data interface{}) {
+   rd := &ResponseData{
+      Code: CodeSuccess,
+      Msg:  CodeSuccess.Msg(),
+      Data: nil,
+   }
+
+   c.JSON(http.StatusOK, rd)
+}
+
+// 自定义错误
+func ResponseErrorWithMsg(c *gin.Context, code ResCode, msg interface{}) {
+   rd := &ResponseData{
+      Code: code,
+      Msg:  msg,
+      Data: nil,
+   }
+    
+   c.JSON(http.StatusOK, rd)
+}
+```
+
+### 创建```code.go```进行存储
+
+```go
+package controllers
+
+type ResCode int64
+
+const (
+   CodeSuccess ResCode = 1000 + iota
+   CodeInvalidParam
+   CodeUserExist
+   CodeUserNotExist
+   CodeInvalidPassword
+   CodeServerBusy
+
+   CodeNeedLogin
+   CodeInvalidToken
+)
+
+var codeMsgMap = map[ResCode]string{
+   CodeSuccess:         "success",
+   CodeInvalidParam:    "请求参数错误",
+   CodeUserExist:       "用户名已存在",
+   CodeUserNotExist:    "用户名不存在",
+   CodeInvalidPassword: "用户名或密码错误",
+   CodeServerBusy:      "服务繁忙",
+
+   CodeNeedLogin:    "需要登录",
+   CodeInvalidToken: "无效的token",
+}
+
+//给 ResCode 定义一个方法
+func (c ResCode) Msg() string {
+   // 查看map中是否存在
+   msg, ok := codeMsgMap[c]
+   if !ok {
+      msg = codeMsgMap[CodeServerBusy]
+   }
+   return msg
+}
+```
+
+### 将```controllers```修改为
+
+```go
+// 登录
+func LoginHandler(c *gin.Context) {
+	//1、获取参数和参数校验
+	p := new(models.ParmLogin)
+	if err := c.ShouldBindJSON(p); err != nil {
+		//请求参数、有误直接返回响应
+		// 记录日志
+		zap.L().Error("Login with invalid param", zap.Error(err))
+		// 判断err是不是validator.ValidationErrors 类型
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok {
+			//c.JSON(http.StatusOK, gin.H{
+			//	"msg": err.Error(),
+			//})
+			ResponseError(c, CodeInvalidParam)
+			return
+		}
+		//c.JSON(http.StatusOK, gin.H{
+		//	"msg": removeTopStruct(errs.Translate(trans)),
+		//})
+		ResponseErrorWithMsg(c, CodeInvalidParam, removeTopStruct(errs.Translate(trans)))
+		return
+	}
+	//2、业务处理
+	if err := logic.Login(p); err != nil {
+		zap.L().Error("logic.Login failed", zap.String("username:", p.Username), zap.Error(err))
+		//c.JSON(http.StatusOK, gin.H{
+		//	"msg": "用户名或密码错误",
+		//})
+		if errors.Is(err, mysql.ErrorUserNotExist) {
+			ResponseError(c, CodeUserNotExist)
+			return
+		}
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	//3、返回响应
+	//c.JSON(http.StatusOK, gin.H{
+	//	"msg": "success",
+	//})
+	ResponseSuccess(c, nil)
+}
+```
+
+## 39基于cookie-Session和Token的认证模式介绍
+
+ ![image-20230708194029464](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194029464.png)
+
+![image-20230708194219582](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194219582.png)
+
+![image-20230708194238698](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194238698.png)
+
+![image-20230708194405737](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194405737.png)
+
+![image-20230708194422027](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194422027.png)
+
+## 40JTW（Json Web Token）
+
+![image-20230708194537645](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194537645.png)
+
+![image-20230708194633301](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194633301.png)
+
+![image-20230708195200364](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708195200364.png)
+
+## 41在项目中使用JTW实现用户认证
+
+### ```controllers/routes.go```
+
+```go
+r.GET("/ping", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
+   // 如果是登录的用户，判断请求头中是否有 有效的JWT？
+   c.String(http.StatusOK, "ping")
+})
+```
+
+### ```/middlewares/auth.go```
+
+```go
+// 检查来的请求中是否按照要求携带了一个 JWT 的检验Token的中间件
+
+// JWTAuthMiddleware 基于JWT的认证中间件
+func JWTAuthMiddleware() func(c *gin.Context) {
+   return func(c *gin.Context) {
+      // 客户端携带Token有三种方式 1.放在请求头 2.放在请求体 3.放在URI
+      // 这里假设Token放在Header的Authorization中，并使用Bearer开头
+      // 这里的具体实现方式要依据你的实际业务情况决定
+      authHeader := c.Request.Header.Get("Authorization")
+      if authHeader == "" {
+         //c.JSON(http.StatusOK, gin.H{
+         // "code": 2003,
+         // "msg":  "请求头中auth为空",
+         //})
+         controllers.ResponseError(c, controllers.CodeNeedLogin)
+         c.Abort() // 退出当前请求的处理流程
+         return
+      }
+      // 按空格分割
+      parts := strings.SplitN(authHeader, " ", 2)
+      if !(len(parts) == 2 && parts[0] == "Bearer") {
+         //c.JSON(http.StatusOK, gin.H{
+         // "code": 2004,
+         // "msg":  "请求头中auth格式有误",
+         //})
+         controllers.ResponseError(c, controllers.CodeInvalidToken)
+         c.Abort()
+         return
+      }
+      // parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它
+      mc, err := jwt.ParseToken(parts[1])
+      if err != nil {
+         //c.JSON(http.StatusOK, gin.H{
+         // "code": 2005,
+         // "msg":  "无效的Token",
+         //})
+         controllers.ResponseError(c, controllers.CodeInvalidToken)
+         c.Abort()
+         return
+      }
+      // 将当前请求的userID信息保存到请求的上下文c上
+      c.Set(controllers.ContestUserIDKey, mc.UserID)
+
+      c.Next() // 后续的处理函数可以用过c.Get(ContestUserIDKey)来获取当前请求的用户信息
+   }
+}
+```
+
+### ```bluebell/controllers/request.go```
+
+获取当前登录用户 ID 可以在```controllers/user.go```下拿到后进行处理
+
+```go
+// 获取当前登录用户 ID
+
+var ErrorUserNotLogin = errors.New("用户未登录")
+
+//定义在这而不是auth中，不然会造成循环引用***********
+const ContestUserIDKey = "userID"
+
+func getCurrentUser(c *gin.Context) (userID int64, err error) {
+   uid, ok := c.Get(ContestUserIDKey)
+   if !ok {
+      err = ErrorUserNotLogin
+      return
+   }
+   userID, ok = uid.(int64)
+   if !ok {
+      err = ErrorUserNotLogin
+      return
+   }
+   return
+}
+```
+

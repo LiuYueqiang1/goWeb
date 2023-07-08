@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"bluebell.com/bluebell/controllers"
+	"bluebell.com/bluebell/middlewares"
 
 	"bluebell.com/bluebell/logger"
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,11 @@ func Setup(mode string) *gin.Engine {
 	// 登录
 	r.POST("/login", controllers.LoginHandler)
 
+	//
+	r.GET("/ping", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
+		// 如果是登录的用户，判断请求头中是否有 有效的JWT？
+		c.String(http.StatusOK, "ping")
+	})
 	r.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "ok")
 	})
