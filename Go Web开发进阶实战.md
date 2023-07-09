@@ -1409,3 +1409,18 @@ func getCurrentUser(c *gin.Context) (userID int64, err error) {
 }
 ```
 
+## 44使用refresh token刷新access token
+
+![image-20230709095738375](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230709095738375.png)
+
+![image-20230709100001327](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230709100001327.png)
+
+## 45限制帐号同一时间只能同时登录一个设备
+
+![image-20230709114818577](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230709114818577.png)
+
+## 46vue实现登陆注册功能介绍
+
+## 47为项目编写Makefile
+
+48
