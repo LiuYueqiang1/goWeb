@@ -199,3 +199,23 @@
 {"level":"DEBUG","time":"2023-07-08T21:34:35.636+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
 {"level":"INFO","time":"2023-07-08T21:34:46.588+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2023-07-08T21:34:46.589+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-10T09:15:46.256+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-10T09:15:46.292+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-10T09:16:01.913+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-10T09:16:01.913+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-10T17:17:08.166+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-10T17:17:08.199+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-10T17:17:29.732+0800","caller":"logger/logger.go:88","msg":"/signup","status":200,"method":"GET","path":"/signup","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-10T17:17:30.375+0800","caller":"logger/logger.go:88","msg":"/favicon.ico","status":200,"method":"GET","path":"/favicon.ico","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-10T17:17:35.178+0800","caller":"logger/logger.go:88","msg":"/","status":200,"method":"GET","path":"/","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-10T17:17:35.379+0800","caller":"logger/logger.go:88","msg":"/favicon.ico","status":200,"method":"GET","path":"/favicon.ico","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-10T17:18:01.531+0800","caller":"logger/logger.go:88","msg":"/publish","status":200,"method":"GET","path":"/publish","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-10T17:18:01.812+0800","caller":"logger/logger.go:88","msg":"/favicon.ico","status":200,"method":"GET","path":"/favicon.ico","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-10T17:18:37.708+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-10T17:18:37.716+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-10T21:11:41.398+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-10T21:11:41.428+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-10T21:12:19.116+0800","caller":"logger/logger.go:88","msg":"/","status":200,"method":"GET","path":"/","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-10T21:12:21.264+0800","caller":"logger/logger.go:88","msg":"/favicon.ico","status":200,"method":"GET","path":"/favicon.ico","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-10T21:13:52.501+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-10T21:13:52.503+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
