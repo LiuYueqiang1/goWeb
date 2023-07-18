@@ -274,3 +274,41 @@
 {"level":"INFO","time":"2023-07-14T09:19:24.644+0800","caller":"logger/logger.go:88","msg":"/api/v1/community/2","status":200,"method":"GET","path":"/api/v1/community/2","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0347754}
 {"level":"INFO","time":"2023-07-14T09:19:31.569+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2023-07-14T09:19:31.569+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-18T21:48:43.683+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-18T21:48:43.806+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-18T21:51:11.932+0800","caller":"logger/logger.go:88","msg":"/api/v1/community/2","status":200,"method":"GET","path":"/api/v1/community/2","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0480945}
+{"level":"INFO","time":"2023-07-18T21:52:24.925+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-18T21:52:24.927+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-18T21:55:03.715+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-18T21:55:03.826+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-18T21:58:09.074+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"POST","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0}
+{"level":"DEBUG","time":"2023-07-18T21:59:17.576+0800","caller":"controllers/post.go:15","msg":"c.ShouldBindJSON(p) error","err":"Key: 'Post.community_id' Error:Field validation for 'community_id' failed on the 'required' tag\nKey: 'Post.title' Error:Field validation for 'title' failed on the 'required' tag\nKey: 'Post.content' Error:Field validation for 'content' failed on the 'required' tag"}
+{"level":"ERROR","time":"2023-07-18T21:59:17.577+0800","caller":"controllers/post.go:16","msg":"create post with invalid param"}
+{"level":"INFO","time":"2023-07-18T21:59:17.577+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"POST","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0019937}
+{"level":"INFO","time":"2023-07-18T21:59:24.190+0800","caller":"logger/logger.go:88","msg":"/api/v1/user","status":200,"method":"POST","path":"/api/v1/user","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-18T21:59:44.825+0800","caller":"logger/logger.go:88","msg":"/api/v1/login","status":200,"method":"POST","path":"/api/v1/login","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0091977}
+{"level":"INFO","time":"2023-07-18T22:00:11.640+0800","caller":"logger/logger.go:88","msg":"/api/v1/community","status":200,"method":"GET","path":"/api/v1/community","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0014037}
+{"level":"INFO","time":"2023-07-18T22:00:44.660+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"POST","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-18T22:01:14.732+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-18T22:01:14.733+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-18T22:01:27.704+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-18T22:01:27.746+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-18T22:01:35.932+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"POST","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0003576}
+{"level":"INFO","time":"2023-07-18T22:02:00.760+0800","caller":"logger/logger.go:88","msg":"/api/v1/community","status":200,"method":"GET","path":"/api/v1/community","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0047693}
+{"level":"INFO","time":"2023-07-18T22:12:00.077+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-18T22:12:00.079+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-18T22:14:10.264+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-18T22:14:10.378+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-18T22:14:36.067+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"POST","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0000483}
+{"level":"INFO","time":"2023-07-18T22:15:01.999+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-18T22:15:02.000+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-18T22:15:12.720+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-18T22:15:12.739+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-18T22:15:41.145+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"POST","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0008017}
+{"level":"INFO","time":"2023-07-18T22:18:35.818+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-18T22:18:35.819+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-18T22:18:43.942+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-18T22:18:43.959+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-18T22:18:50.474+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"POST","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0006223}
+{"level":"INFO","time":"2023-07-18T22:19:00.372+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"GET","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0}
+{"level":"INFO","time":"2023-07-18T22:19:06.174+0800","caller":"logger/logger.go:88","msg":"/api/v1/community/2","status":200,"method":"GET","path":"/api/v1/community/2","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0160066}

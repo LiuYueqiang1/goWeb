@@ -1423,4 +1423,105 @@ func getCurrentUser(c *gin.Context) (userID int64, err error) {
 
 ## 47为项目编写Makefile
 
-48
+## 49社区分类接口实现
+
+![社区分类](F:\goland\go_project\go_Web81\goWeb\picture\社区分类.png)
+
+在```routes.go```创建登录路由。
+
+```go
+v1.GET("/community", controllers.CommunityHandler)
+```
+
+在```bluebell/controllers/community.go```创建```CommunityHandler```
+
+```go
+func CommunityHandler(c *gin.Context) {
+	//查询到所有的社区以列表的形式返回
+	data, err := logic.GetCommunityList()
+	if err != nil {
+		zap.L().Error("logic.GetCommunityList() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, data)
+}
+```
+
+在```bluebell/logic/community.go```获取社区列表的函数
+
+```go
+func GetCommunityList() ([]*models.Community, error) {
+   // 查询数据库 查找到所有的community 并返回
+   return mysql.GetCommunityList()
+}
+```
+
+在```bluebell/models/community.go```中创建社区的结构体
+
+```go
+type Community struct {
+   ID   int64  `json:"id" db:"community_id"`
+   Name string `json:"name" db:"community_name"`
+}
+```
+
+在```bluebell/dao/mysql/community.go```中创建获取数据库中内容的操作
+
+```go
+func GetCommunityList() (communityList []*models.Community, err error) {
+   sqlStr := "select community_id,community_name from community"
+   if err := db.Select(&communityList, sqlStr); err != nil {
+      if err == sql.ErrNoRows {
+         zap.L().Warn("there is no community in db")
+         err = nil
+      }
+   }
+   return
+}
+```
+
+## 51获取社区中的某一条数据
+
+## 52帖子表结构、发帖子
+
+接口是一种类型，一种抽象的类型。
+
+```routes.go```
+
+```go
+v1.post("/post",controller.CreatePostHandler)
+```
+
+```controllers.post```
+
+```go
+CreatePostHandler(c *gin.Context){
+        //1、获取参数及参数校验
+        c.ShouldBindJson()
+        //2、创建帖子
+        //3、返回响应
+}
+```
+
+![image-20230718211150307](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230718211150307.png)
+
+获取当前用户的ID ```request.go```
+
+
+
+```models.go```
+
+**内存对齐**后内存减小，定义结构体字段时尽量将类型相同的结构体字段放到一起
+
+![image-20230718202632903](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230718202632903.png)
+
+创建数据库post表
+
+```logic.go```
+
+![image-20230718211621422](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230718211621422.png)
+
+```mysql.post```
+
+![image-20230718211705801](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230718211705801.png)
