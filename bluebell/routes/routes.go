@@ -26,15 +26,17 @@ func Setup(mode string) *gin.Engine {
 	// 登录
 	v1.POST("/login", controllers.LoginHandler)
 	v1.GET("/community", controllers.CommunityHandler)
-	v1.GET("/community/:id", controllers.CommunityDetailHandler)
+	//v1.GET("/community/:id", controllers.CommunityDetailHandler)
 	v1.POST("/post", controllers.CreatePostHandler)
 	v1.Use(middlewares.JWTAuthMiddleware()) //应用JTW认证中间件
-
+	{
+		v1.GET("/community/:id", controllers.CommunityDetailHandler)
+	}
 	//
-	//r.GET("/ping", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
-	//	// 如果是登录的用户，判断请求头中是否有 有效的JWT？
-	//	c.String(http.StatusOK, "ping")
-	//})
+	r.GET("/ping", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
+		// 如果是登录的用户，判断请求头中是否有 有效的JWT？
+		c.String(http.StatusOK, "ping")
+	})
 	//r.GET("/", func(c *gin.Context) {
 	//	c.String(http.StatusOK, "ok")
 	//})

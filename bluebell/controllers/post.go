@@ -17,13 +17,17 @@ func CreatePostHandler(c *gin.Context) {
 		ResponseError(c, CodeInvalidParam)
 		return
 	}
+
+	// 由于始终拿不到 token ，所以我们取消了登录这一项
+
 	// 从 c 取到当前发送请求的用户的 ID
-	userID, err := getCurrentUser(c)
-	if err != nil {
-		ResponseError(c, CodeNeedLogin)
-		return
-	}
-	p.AuthorID = userID
+	//userID, err := getCurrentUserID(c)
+	//if err != nil {
+	//	ResponseError(c, CodeNeedLogin)
+	//	return
+	//}
+	//p.AuthorID = userID
+
 	//2、创建帖子
 	if err := logic.CreatePost(p); err != nil {
 		zap.L().Error("logic.CreatePost(p) failed", zap.Error(err))
@@ -34,6 +38,11 @@ func CreatePostHandler(c *gin.Context) {
 	ResponseSuccess(c, nil)
 }
 
-//"title":"study go make me happy",
-//"content":"My ei must be accept",
-//"community_id":1
+/*
+"title":"study go make me happy",
+"content":"My ei must be accept",
+"community_id":1
+
+   "username":"七米",
+   "password":"123"
+*/

@@ -11,7 +11,7 @@ var ErrorUserNotLogin = errors.New("用户未登录")
 const ContestUserIDKey = "userID"
 
 // getCurrentUser 获取当前登录用户 ID
-func getCurrentUser(c *gin.Context) (userID int64, err error) {
+func getCurrentUserID(c *gin.Context) (userID int64, err error) {
 	uid, ok := c.Get(ContestUserIDKey)
 	if !ok {
 		err = ErrorUserNotLogin
