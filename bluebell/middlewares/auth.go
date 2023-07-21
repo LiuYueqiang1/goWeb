@@ -29,6 +29,9 @@ func JWTAuthMiddleware() func(c *gin.Context) {
 		}
 		// 按空格分割
 		parts := strings.SplitN(authHeader, " ", 2)
+		//fmt.Println(parts)
+		//[Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxODM3Mjk2MDI2MzkwNTI4LCJ1c2VybmFtZSI6IuS4g-exsyIsImV4cCI6MTY4OTkxMDQxNSwiaXNzIjoiYmx1ZWJlbGwuY29tL2JsdWViZWxsIn0.63qNzcsYhN
+		//vgBy516X0TeGh11YNsYmBSEVINyE5D6HU]
 		if !(len(parts) == 2 && parts[0] == "Bearer") {
 			//c.JSON(http.StatusOK, gin.H{
 			//	"code": 2004,

@@ -31,8 +31,11 @@ func GenToken(userID int64, username string) (string, error) {
 		userID,
 		username, // 自定义字段
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Duration(viper.GetInt("auth.jwt_expire")) * time.Hour).Unix(), //过期时间
-			Issuer:    "bluebell.com/bluebell",                                                           // 签发人
+			ExpiresAt: time.Now().Add(
+				time.Duration(viper.GetInt("auth.jwt_expire")) * time.Hour).Unix(), //过期时间
+			// 之前一直是cong.yaml文件写的有问题，调试后发现一直 超出截止日期 仔细检查才发现yaml文件没定义空格
+			//  jwt_expire: 8760
+			Issuer: "bluebell", // 签发人
 		},
 	}
 	// 使用指定的签名方法创建签名对象

@@ -21,12 +21,12 @@ func CreatePostHandler(c *gin.Context) {
 	// 由于始终拿不到 token ，所以我们取消了登录这一项
 
 	// 从 c 取到当前发送请求的用户的 ID
-	//userID, err := getCurrentUserID(c)
-	//if err != nil {
-	//	ResponseError(c, CodeNeedLogin)
-	//	return
-	//}
-	//p.AuthorID = userID
+	userID, err := getCurrentUserID(c)
+	if err != nil {
+		ResponseError(c, CodeNeedLogin)
+		return
+	}
+	p.AuthorID = userID
 
 	//2、创建帖子
 	if err := logic.CreatePost(p); err != nil {
