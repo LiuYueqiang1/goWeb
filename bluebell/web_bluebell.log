@@ -526,3 +526,53 @@
 {"level":"INFO","time":"2023-07-21T15:52:37.490+0800","caller":"logger/logger.go:55","msg":"init logger success"}
 {"level":"DEBUG","time":"2023-07-21T15:52:37.506+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
 {"level":"INFO","time":"2023-07-21T15:52:54.059+0800","caller":"logger/logger.go:88","msg":"/ping","status":200,"method":"GET","path":"/ping","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0004889}
+{"level":"INFO","time":"2023-07-21T15:54:05.528+0800","caller":"logger/logger.go:88","msg":"/api/v1/post","status":200,"method":"POST","path":"/api/v1/post","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0277855}
+{"level":"INFO","time":"2023-07-21T15:57:40.013+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-21T15:57:40.014+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-22T16:33:46.213+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-22T16:33:46.249+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"ERROR","time":"2023-07-22T16:34:29.182+0800","caller":"logic/post.go:37","msg":"mysql.GetUserById(post.AuthorID) failed","author_id":0,"error":"sql: no rows in result set"}
+{"level":"ERROR","time":"2023-07-22T16:34:29.182+0800","caller":"controllers/post.go:55","msg":"logic.GetPostById(pid) failed","error":"sql: no rows in result set"}
+{"level":"INFO","time":"2023-07-22T16:34:29.183+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7290692015493120","status":200,"method":"GET","path":"/api/v1/post/7290692015493120","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0192288}
+{"level":"INFO","time":"2023-07-22T16:35:22.256+0800","caller":"logger/logger.go:88","msg":"/api/v1/community/1","status":200,"method":"GET","path":"/api/v1/community/1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0063055}
+{"level":"INFO","time":"2023-07-22T16:35:27.166+0800","caller":"logger/logger.go:88","msg":"/api/v1/community/1","status":200,"method":"GET","path":"/api/v1/community/1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0013306}
+{"level":"INFO","time":"2023-07-22T16:35:34.142+0800","caller":"logger/logger.go:88","msg":"/api/v1.post/1","status":200,"method":"GET","path":"/api/v1.post/1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0}
+{"level":"ERROR","time":"2023-07-22T16:36:05.129+0800","caller":"logic/post.go:29","msg":"mysql.GetPostById(pid) failed","pid":1,"error":"sql: no rows in result set"}
+{"level":"ERROR","time":"2023-07-22T16:36:05.129+0800","caller":"controllers/post.go:55","msg":"logic.GetPostById(pid) failed","error":"sql: no rows in result set"}
+{"level":"INFO","time":"2023-07-22T16:36:05.130+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/1","status":200,"method":"GET","path":"/api/v1/post/1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0024991}
+{"level":"ERROR","time":"2023-07-22T16:36:16.469+0800","caller":"logic/post.go:37","msg":"mysql.GetUserById(post.AuthorID) failed","author_id":0,"error":"sql: no rows in result set"}
+{"level":"ERROR","time":"2023-07-22T16:36:16.469+0800","caller":"controllers/post.go:55","msg":"logic.GetPostById(pid) failed","error":"sql: no rows in result set"}
+{"level":"INFO","time":"2023-07-22T16:36:16.470+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7290692015493120","status":200,"method":"GET","path":"/api/v1/post/7290692015493120","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.004656}
+{"level":"INFO","time":"2023-07-22T16:36:26.942+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-22T16:36:26.943+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-22T17:04:41.949+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-22T17:04:41.978+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-22T17:04:54.947+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7290692015493120","status":200,"method":"GET","path":"/api/v1/post/7290692015493120","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0438288}
+{"level":"INFO","time":"2023-07-22T17:05:44.535+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-22T17:05:44.536+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-22T17:05:48.474+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-22T17:05:48.490+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-22T17:05:56.824+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7290692015493120","status":200,"method":"GET","path":"/api/v1/post/7290692015493120","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0041819}
+{"level":"INFO","time":"2023-07-22T17:06:02.944+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-22T17:06:02.945+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-22T17:16:18.313+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-22T17:16:18.339+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"INFO","time":"2023-07-22T17:16:31.277+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7290692015493120","status":200,"method":"GET","path":"/api/v1/post/7290692015493120","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0089833}
+{"level":"INFO","time":"2023-07-22T17:16:35.747+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7290692015493120","status":200,"method":"GET","path":"/api/v1/post/7290692015493120","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.000414}
+{"level":"INFO","time":"2023-07-22T17:17:58.031+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-22T17:17:58.032+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-22T17:18:02.382+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-22T17:18:02.398+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"ERROR","time":"2023-07-22T17:18:18.259+0800","caller":"logic/post.go:53","msg":"mysql.GetUserById(post.AuthorID) failed","author_id":0,"error":"sql: no rows in result set"}
+{"level":"ERROR","time":"2023-07-22T17:18:18.259+0800","caller":"controllers/post.go:55","msg":"logic.GetPostById(pid) failed","error":"sql: no rows in result set"}
+{"level":"INFO","time":"2023-07-22T17:18:18.259+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7290692015493120","status":200,"method":"GET","path":"/api/v1/post/7290692015493120","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0080038}
+{"level":"INFO","time":"2023-07-22T17:19:33.913+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-22T17:19:33.914+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}
+{"level":"INFO","time":"2023-07-22T17:23:37.666+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-07-22T17:23:37.677+0800","caller":"bluebell/main.go:46","msg":"logger init success..."}
+{"level":"ERROR","time":"2023-07-22T17:23:45.910+0800","caller":"logic/post.go:53","msg":"mysql.GetUserById(post.AuthorID) failed","author_id":0,"error":"sql: no rows in result set"}
+{"level":"ERROR","time":"2023-07-22T17:23:45.910+0800","caller":"controllers/post.go:55","msg":"logic.GetPostById(pid) failed","error":"sql: no rows in result set"}
+{"level":"INFO","time":"2023-07-22T17:23:45.910+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7290692015493120","status":200,"method":"GET","path":"/api/v1/post/7290692015493120","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0079917}
+{"level":"INFO","time":"2023-07-22T17:28:13.919+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/7367066386436096","status":200,"method":"GET","path":"/api/v1/post/7367066386436096","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.32.3","errors":"","cost":0.0110223}
+{"level":"INFO","time":"2023-07-22T17:32:21.783+0800","caller":"bluebell/main.go:95","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-07-22T17:32:21.784+0800","caller":"bluebell/main.go:103","msg":"Server exiting"}

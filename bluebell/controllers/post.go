@@ -4,6 +4,7 @@ import (
 	"bluebell.com/bluebell/logic"
 	"bluebell.com/bluebell/models"
 	"go.uber.org/zap"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,6 +37,28 @@ func CreatePostHandler(c *gin.Context) {
 	}
 	//3、返回响应
 	ResponseSuccess(c, nil)
+}
+
+func GetPostDetailHandler(c *gin.Context) {
+	// 1. 获取参数（从URL中获取帖子的id）
+	// 此处的 id 为从网页中获取的 id
+	pidStr := c.Param("id")
+	pid, err := strconv.ParseInt(pidStr, 10, 64)
+	if err != nil {
+		zap.L().Error("get post detail with invalid param", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+
+	// 2. 根据id取出帖子数据（查数据库）
+	data, err := logic.GetPostById2(pid)
+	if err != nil {
+		zap.L().Error("logic.GetPostById(pid) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	// 3. 返回响应
+	ResponseSuccess(c, data)
 }
 
 /*

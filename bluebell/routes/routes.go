@@ -31,6 +31,7 @@ func Setup(mode string) *gin.Engine {
 	v1.Use(middlewares.JWTAuthMiddleware()) //应用JTW认证中间件
 	{
 		v1.POST("/post", controllers.CreatePostHandler)
+		v1.GET("/post/:id", controllers.GetPostDetailHandler)
 	}
 	//
 	r.GET("/ping", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {

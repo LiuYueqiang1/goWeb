@@ -1487,41 +1487,217 @@ func GetCommunityList() (communityList []*models.Community, err error) {
 
 接口是一种类型，一种抽象的类型。
 
-```routes.go```
+### ```routes.go```
 
 ```go
-v1.post("/post",controller.CreatePostHandler)
+v1.POST("/post", controllers.CreatePostHandler)
 ```
 
-```controllers.post```
+### ```controllers.post```
 
 ```go
-CreatePostHandler(c *gin.Context){
-        //1、获取参数及参数校验
-        c.ShouldBindJson()
-        //2、创建帖子
-        //3、返回响应
+func CreatePostHandler(c *gin.Context) {
+	//1、获取参数及参数校验
+	p := new(models.Post)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Debug("c.ShouldBindJSON(p) error", zap.Any("err", err))
+		zap.L().Error("create post with invalid param")
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+
+	// 由于始终拿不到 token ，所以我们取消了登录这一项
+
+	// 从 c 取到当前发送请求的用户的 ID
+	userID, err := getCurrentUserID(c)
+	if err != nil {
+		ResponseError(c, CodeNeedLogin)
+		return
+	}
+	p.AuthorID = userID
+
+	//2、创建帖子
+	if err := logic.CreatePost(p); err != nil {
+		zap.L().Error("logic.CreatePost(p) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	//3、返回响应
+	ResponseSuccess(c, nil)
 }
 ```
 
-![image-20230718211150307](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230718211150307.png)
+### 获取当前用户的ID ```controllers/request.go```
 
-获取当前用户的ID ```request.go```
+```go
+// getCurrentUser 获取当前登录用户 ID
+func getCurrentUserID(c *gin.Context) (userID int64, err error) {
+   uid, ok := c.Get(ContestUserIDKey)
+   if !ok {
+      err = ErrorUserNotLogin
+      return
+   }
+   userID, ok = uid.(int64)
+   if !ok {
+      err = ErrorUserNotLogin
+      return
+   }
+   return
+}
+```
 
-
-
-```models.go```
+### ```models.go```
 
 **内存对齐**后内存减小，定义结构体字段时尽量将类型相同的结构体字段放到一起
 
-![image-20230718202632903](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230718202632903.png)
+```go
+// 内存对齐概念
+
+type Post struct {
+   ID          int64     `json:"id,string" db:"post_id"`          // 帖子id
+   AuthorID    int64     `json:"author_id" db:"author_id"`       // 作者id
+   CommunityID int64     `json:"community_id" db:"community_id" binding:"required"` // 社区id
+   Status      int32     `json:"status" db:"status"`             // 帖子状态
+   Title       string    `json:"title" db:"title" binding:"required"` // 帖子标题
+   Content     string    `json:"content" db:"content" binding:"required"`     // 帖子内容
+   CreateTime  time.Time `json:"create_time" db:"create_time"`       // 帖子创建时间
+}
+```
 
 创建数据库post表
 
-```logic.go```
+### ```logic.go```
 
-![image-20230718211621422](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230718211621422.png)
+```go
+func CreatePost(p *models.Post) (err error) {
+   // 1. 生成post id
+   p.ID = snowflake.GenID()
+   
+   return mysql.CreatePost(p)
+}
+```
 
-```mysql.post```
+### ```mysql.post```
 
-![image-20230718211705801](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230718211705801.png)
+```go
+// CreatePost 创建帖子
+func CreatePost(p *models.Post) (err error) {
+   sqlStr := `insert into post(
+   post_id, title, content, author_id, community_id)
+   values (?, ?, ?, ?, ?)
+   `
+   _, err = db.Exec(sqlStr, p.ID, p.Title, p.Content, p.AuthorID, p.CommunityID)
+   return
+}
+```
+
+## 53bluebull实现帖子详情功能
+
+### ```routes```
+
+```go
+v1.GET("/post/:id", controllers.GetPostDetailHandler)
+```
+
+### ```controllers/post```
+
+```go
+func GetPostDetailHandler(c *gin.Context) {
+	// 1. 获取参数（从URL中获取帖子的id）
+	pidStr := c.Param("id")
+	pid, err := strconv.ParseInt(pidStr, 10, 64)
+	if err != nil {
+		zap.L().Error("get post detail with invalid param", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+
+	// 2. 根据id取出帖子数据（查数据库）
+	data, err := logic.GetPostById2(pid)
+	if err != nil {
+		zap.L().Error("logic.GetPostById(pid) failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	// 3. 返回响应
+	ResponseSuccess(c, data)
+}
+```
+
+### ```logic/post```
+
+```go
+func GetPostById1(pid int64) (data *models.Post, err error) {
+   return mysql.GetPostById(pid)
+}
+```
+
+如果上述中的接口满足不了你的需求，则自定义接口类型。```models.post```
+
+```models/post```
+
+```go
+// ApiPostDetail 帖子详情接口的结构体
+type ApiPostDetail struct {
+   AuthorName string `json:"author_name"` // 作者
+   *Post                               // 嵌入帖子结构体
+   *CommunityDetail `json:"community"` // 嵌入社区信息
+}
+```
+
+```logic/post```
+
+```go
+func GetPostById2(pid int64) (data *models.ApiPostDetail, err error) {
+   // 查询并组合我们接口想用的数据
+   post, err := mysql.GetPostById(pid)
+   if err != nil {
+      zap.L().Error("mysql.GetPostById(pid) failed",
+         zap.Int64("pid", pid),
+         zap.Error(err))
+      return
+   }
+   // 根据作者id查询作者信息
+   user, err := mysql.GetUserById(post.AuthorID)
+   // **************必须要从中间件 post 的信息才可以，这样才有AuthorID***********//
+   // 不然拿不到 AuthorID 的话将会返回错误
+   if err != nil {
+      zap.L().Error("mysql.GetUserById(post.AuthorID) failed",
+         zap.Int64("author_id", post.AuthorID),
+         zap.Error(err))
+      return
+   }
+   // 根据社区id查询社区详细信息
+   community, err := mysql.GetCommunityDetailByID(post.CommunityID)
+   if err != nil {
+      zap.L().Error("mysql.GetCommunityDetailByID(post.AuthorID) failed",
+         zap.Int64("community_id", post.CommunityID),
+         zap.Error(err))
+      return
+   }
+   // 接口数据拼接
+   data = &models.ApiPostDetail{
+      AuthorName:      user.Username,
+      Post:            post,
+      CommunityDetail: community,
+   }
+   return
+}
+```
+
+### ```mysql/post```
+
+```go
+// GetPostById 根据id查询单个贴子数据
+func GetPostById(pid int64) (post *models.Post, err error) {
+   post = new(models.Post)
+   sqlStr := `select
+   post_id, title, content, author_id, community_id, create_time
+   from post
+   where post_id = ?
+   `
+   err = db.Get(post, sqlStr, pid)
+   return
+}
+```
+
