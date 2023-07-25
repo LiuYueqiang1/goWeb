@@ -1701,3 +1701,12 @@ func GetPostById(pid int64) (post *models.Post, err error) {
 }
 ```
 
+## 56帖子分页展示
+
+```go
+v1.GET("/post",conllers.GetPostListHandler)
+```
+
+```controllers.post```
+
+![image-20230725161718590](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230725161718590.png)
