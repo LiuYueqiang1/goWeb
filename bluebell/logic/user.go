@@ -32,15 +32,20 @@ func SignUp(p *models.ParmSignUp) (err error) {
 	return mysql.InsertUser(user)
 }
 
-func Login(p *models.ParmLogin) (token string, err error) {
-	user := &models.User{
+func Login(p *models.ParmLogin) (user *models.User, err error) {
+	user = &models.User{
 		Username: p.Username,
 		Password: p.Password,
 	}
 	// 传递的指针，就能拿到user.UserID
 	if err := mysql.Login(user); err != nil {
-		return "", err
+		return nil, err
 	}
 	// 生成JWT
-	return jwt.GenToken(user.UserID, user.Username)
+	token, err := jwt.GenToken(user.UserID, user.Username)
+	if err != nil {
+		return
+	}
+	user.Token = token
+	return
 }

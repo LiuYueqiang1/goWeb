@@ -1710,3 +1710,17 @@ v1.GET("/post",conllers.GetPostListHandler)
 ```controllers.post```
 
 ![image-20230725161718590](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230725161718590.png)
+
+## 57解决传给前端数字id失真的问题
+
+json能够接收的数字范围为-(2^53-1)~(2^53-1)
+
+将json中超过其范围的值转换为字符串上传到后端。
+
+shouldbind 解析到struct中  时，如果前端是字符串类型，struct 是 int64类型，则无法解析
+
+## 58帖子投票功能需求分析
+
+![image-20230809100505433](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230809100505433.png)
+
+![image-20230809101113722](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230809101113722.png)

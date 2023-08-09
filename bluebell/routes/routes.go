@@ -34,6 +34,9 @@ func Setup(mode string) *gin.Engine {
 		v1.GET("/post/:id", controllers.GetPostDetailHandler)
 		v1.GET("/posts", controllers.GetPostListHandler)
 		// http://127.0.0.1:8081/api/v1/posts/?size=1&page=3
+
+		//投票
+		v1.POST("/vote", controllers.PostVoteController)
 	}
 	//
 	r.GET("/ping", middlewares.JWTAuthMiddleware(), func(c *gin.Context) {
