@@ -37,6 +37,7 @@ func GetPostList(page, size int64) (posts []*models.Post, err error) {
 	DESC
 	limit ?,?
 	`
+	// ASC 升序  DESC 降序
 	posts = make([]*models.Post, 0, 2) // 不要写成make([]*models.Post, 2)
 	err = db.Select(&posts, sqlStr, (page-1)*size, size)
 	return

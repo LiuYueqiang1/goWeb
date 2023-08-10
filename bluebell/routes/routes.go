@@ -33,6 +33,7 @@ func Setup(mode string) *gin.Engine {
 		v1.POST("/post", controllers.CreatePostHandler)
 		v1.GET("/post/:id", controllers.GetPostDetailHandler)
 		v1.GET("/posts", controllers.GetPostListHandler)
+		v1.GET("/posts2", controllers.GetPostListHandler2)
 		// http://127.0.0.1:8081/api/v1/posts/?size=1&page=3
 
 		//投票

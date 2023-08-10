@@ -1923,3 +1923,8 @@ http://127.0.0.1:8081/api/v1/post
 }
 ```
 
+## 64新版获取贴子列表接口之获取请求参数
+
+按照时间排序  					或者按照分数排序
+
+![image-20230810162420169](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230810162420169.png)

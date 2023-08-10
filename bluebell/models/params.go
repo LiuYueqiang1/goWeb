@@ -1,5 +1,10 @@
 package models
 
+const (
+	OrderTime  = "time"
+	OrderScore = "score"
+)
+
 //定义请求的参数结构体
 
 // ParmSignUp 注册用户的结构体
@@ -20,4 +25,11 @@ type ParmLogin struct {
 type ParamVoteData struct {
 	PostID    string `json:"post_id" binding:"required"`
 	Direction int8   `json:"direction,string" binding:"oneof=1 0 -1"` // 赞成票+1 反对票-1  取消投票0
+}
+
+// ParamPostList 获取帖子列表 string 的参数
+type ParamPostList struct {
+	Page  int64  `json:"page" form:"page"`
+	Size  int64  `json:"size" form:"size"`
+	Order string `json:"order" form:"order"`
 }
