@@ -1724,3 +1724,202 @@ shouldbind 解析到struct中  时，如果前端是字符串类型，struct 是
 ![image-20230809100505433](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230809100505433.png)
 
 ![image-20230809101113722](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230809101113722.png)
+
+```go
+//投票
+v1.POST("/vote", controllers.PostVoteController)
+```
+
+```controllers.vote```
+
+```go
+func PostVoteController(c *gin.Context) {
+	// 参数校验
+	p := new(models.ParamVoteData)
+	if err := c.ShouldBindJSON(p); err != nil {
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok {
+			ResponseError(c, CodeInvalidParam)
+			return
+		}
+		errData := removeTopStruct(errs.Translate(trans))
+		ResponseErrorWithMsg(c, CodeInvalidParam, errData)
+		return
+	}
+	logic.PostVote()
+	ResponseSuccess(c, nil)
+}
+```
+
+```models.params```
+
+```go
+// ParamVoteData 投票数据
+type ParamVoteData struct {
+	PostID    int64 `json:"post_id,string" binding:"required"`
+	Direction int   `json:"direction,string" binding:"required,oneof=1 0 -1"` // 赞成票+1 反对票-1  取消投票0
+}
+```
+
+```controllers.response```
+
+```go
+type ResponseData struct {
+   Code ResCode     `json:"code"`
+   Msg  interface{} `json:"msg"`
+   Data interface{} `json:"data,omitempty"`
+}
+```
+
+## 63帖子接口测试及功能完善
+
+```controllers\post```
+
+```go
+func PostVoteController(c *gin.Context) {
+	// 参数校验
+	p := new(models.ParamVoteData)
+	if err := c.ShouldBindJSON(p); err != nil {
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok {
+			ResponseError(c, CodeInvalidParam)
+			return
+		}
+		errData := removeTopStruct(errs.Translate(trans))
+		ResponseErrorWithMsg(c, CodeInvalidParam, errData)
+		return
+	}
+
+	// 获取当前的用户 ID
+	userID, err := getCurrentUserID(c)
+	if err != nil {
+		ResponseError(c, CodeNeedLogin)
+		return
+	}
+	// 具体投票的业务逻辑
+	if err := logic.VoteForPost(userID, p); err != nil {
+		zap.L().Error("logic.VoteForPost() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, nil)
+}
+
+```
+
+```modles\params```
+
+```go
+// ParamVoteData 投票数据
+type ParamVoteData struct {
+	PostID    string `json:"post_id" binding:"required"`
+	Direction int8   `json:"direction,string" binding:"oneof=1 0 -1"` // 赞成票+1 反对票-1  取消投票0
+}
+```
+
+```logic\vote```
+
+```go
+// VoteForPost() 为帖子投票的函数
+
+func VoteForPost(userID int64, p *models.ParamVoteData) error {
+   zap.L().Debug("VoteForPost", zap.Int64("userID", userID),
+      zap.String("postID", p.PostID),
+      zap.Int8("direction", p.Direction))
+   return redis.VoteForPost(strconv.Itoa(int(userID)), p.PostID, float64(p.Direction))
+   // 1、判断投票限制
+   // 2、更新分数
+   // 3、记录用户为该帖子投票的数据
+}
+```
+
+```redis\vote```
+
+```go
+// 本项目使用简化版的投票分数
+// 投一票就加432分   86400/200  --> 200张赞成票可以给你的帖子续一天
+
+/*
+	 投票的几种情况：
+	   direction=1时，有两种情况：
+	   	1. 之前没有投过票，现在投赞成票    --> 更新分数和投票记录  差值的绝对值：1  +432
+	   	2. 之前投反对票，现在改投赞成票    --> 更新分数和投票记录  差值的绝对值：2  +432*2
+	   direction=0时，有两种情况：
+	   	1. 之前投过反对票，现在要取消投票  --> 更新分数和投票记录  差值的绝对值：1  +432
+		2. 之前投过赞成票，现在要取消投票  --> 更新分数和投票记录  差值的绝对值：1  -432
+	   direction=-1时，有两种情况：
+	   	1. 之前没有投过票，现在投反对票    --> 更新分数和投票记录  差值的绝对值：1  -432
+	   	2. 之前投赞成票，现在改投反对票    --> 更新分数和投票记录  差值的绝对值：2  -432*2
+
+	   投票的限制：
+	   每个贴子自发表之日起一个星期之内允许用户投票，超过一个星期就不允许再投票了。
+	   	1. 到期之后将redis中保存的赞成票数及反对票数存储到mysql表中
+	   	2. 到期之后删除那个 KeyPostVotedZSetPF
+*/
+
+func VoteForPost(userID, postID string, value float64) error {
+   // 1. 判断投票限制
+   // 去redis取帖子发布时间
+   postTime := rdb.ZScore(context.Background(), getRedisKey(KeyPostTimeZSet), postID).Val()
+   if float64(time.Now().Unix())-postTime > oneWeekInSeconds {
+      return ErrVoteTimeExpire
+   }
+   // 2和3需要放到一个pipeline事务中操作
+
+   // 2. 更新贴子的分数
+   // 先查当前用户给当前帖子的投票记录
+   ov := rdb.ZScore(context.Background(), getRedisKey(KeyPostVotedZSetPF+postID), userID).Val()
+
+   // 更新：如果这一次投票的值和之前保存的值一致，就提示不允许重复投票
+   if value == ov {
+      return ErrVoteRepeated
+   }
+   var op float64
+   if value > ov {
+      op = 1
+   } else {
+      op = -1
+   }
+   diff := math.Abs(ov - value) // 计算两次投票的差值
+   pipeline := rdb.TxPipeline()
+   pipeline.ZIncrBy(context.Background(), getRedisKey(KeyPostScoreZSet), op*diff*scorePerVote, postID)
+
+   // 3. 记录用户为该贴子投票的数据
+   if value == 0 {
+      pipeline.ZRem(context.Background(), getRedisKey(KeyPostVotedZSetPF+postID), userID)
+   } else {
+      pipeline.ZAdd(context.Background(), getRedisKey(KeyPostVotedZSetPF+postID), &redis.Z{
+         Score:  value, // 赞成票还是反对票
+         Member: userID,
+      })
+   }
+   _, err := pipeline.Exec(context.Background())
+   return err
+}
+```
+
+```redis\key```
+
+```go
+// 给reids key加上前缀
+func getRedisKey(key string) string {
+   return Prefix + key
+}
+```
+
+```postman``
+
+```
+http://127.0.0.1:8081/api/v1/vote
+{
+    "post_id":"14344928624644096",
+    "direction":"1"
+}
+http://127.0.0.1:8081/api/v1/post
+{
+"title":"投票功能测试3",
+"content":"12345",
+"community_id":3
+}
+```
+

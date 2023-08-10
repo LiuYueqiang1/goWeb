@@ -5,6 +5,7 @@ import (
 	"bluebell.com/bluebell/models"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"go.uber.org/zap"
 )
 
 // 投票
@@ -26,6 +27,18 @@ func PostVoteController(c *gin.Context) {
 		ResponseErrorWithMsg(c, CodeInvalidParam, errData)
 		return
 	}
-	logic.PostVote()
+
+	// 获取当前的用户 ID
+	userID, err := getCurrentUserID(c)
+	if err != nil {
+		ResponseError(c, CodeNeedLogin)
+		return
+	}
+	// 具体投票的业务逻辑
+	if err := logic.VoteForPost(userID, p); err != nil {
+		zap.L().Error("logic.VoteForPost() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
 	ResponseSuccess(c, nil)
 }
