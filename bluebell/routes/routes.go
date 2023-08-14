@@ -22,7 +22,8 @@ func Setup(mode string) *gin.Engine {
 	r := gin.New()
 	r.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
-
+	// 两秒钟限制
+	//r.Use(logger.GinLogger(), logger.GinRecovery(true), middlewares.RateLimitMiddleware(2*time.Second, 1))
 	v1 := r.Group("/api/v1")
 	// 注册
 	v1.POST("/signup", controllers.SignUpHandler)
