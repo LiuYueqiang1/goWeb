@@ -9,6 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetPostListHandler2 升级版帖子列表接口
+// @Summary 升级版帖子列表接口
+// @Description 可按社区按时间或分数排序查询帖子列表接口
+// @Tags 帖子相关接口
+// @Accept application/json
+// @Produce application/json
+// @Param Authorization header string false "Bearer 用户令牌"
+// @Param object query models.ParamPostList false "查询参数"
+// @Security ApiKeyAuth
+// @Success 200 {object} _ResponsePostList
+// @Router /posts2 [get]
 func CreatePostHandler(c *gin.Context) {
 	//1、获取参数及参数校验
 	p := new(models.Post)
@@ -97,7 +108,7 @@ func GetPostListHandler2(c *gin.Context) {
 	}
 	//page, size := getPageInfo(c)
 	// 获取数据
-	data, err := logic.GetPostList2(p)
+	data, err := logic.GetPostListNew(p) //  更新：和二为一
 	if err != nil {
 		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
@@ -108,32 +119,32 @@ func GetPostListHandler2(c *gin.Context) {
 }
 
 // 根据社区去查询帖子列表
-func GetCommuntiyPostListHandler(c *gin.Context) {
-	// 初始化结构体时指定初始参数
-	p := &models.ParamCommunityPostList{
-		ParamPostList: &models.ParamPostList{
-			Page:  1,
-			Size:  10,
-			Order: models.OrderTime,
-		},
-	}
-	//c.ShouldBind()  根据请求的数据类型选择相应的方法去获取数据
-	//c.ShouldBindJSON() 如果请求中携带的是json格式的数据，才能用这个方法获取到数据
-	if err := c.ShouldBindQuery(p); err != nil {
-		zap.L().Error("GetCommunityPostListHandler with invalid params", zap.Error(err))
-		ResponseError(c, CodeInvalidParam)
-		return
-	}
-
-	// 获取数据
-	data, err := logic.GetCommunityPostList(p.ParamPostList)
-	if err != nil {
-		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
-		ResponseError(c, CodeServerBusy)
-		return
-	}
-	ResponseSuccess(c, data)
-}
+//func GetCommuntiyPostListHandler(c *gin.Context) {
+//	// 初始化结构体时指定初始参数
+//	p := &models.ParamCommunityPostList{
+//		ParamPostList: &models.ParamPostList{
+//			Page:  1,
+//			Size:  10,
+//			Order: models.OrderTime,
+//		},
+//	}
+//	//c.ShouldBind()  根据请求的数据类型选择相应的方法去获取数据
+//	//c.ShouldBindJSON() 如果请求中携带的是json格式的数据，才能用这个方法获取到数据
+//	if err := c.ShouldBindQuery(p); err != nil {
+//		zap.L().Error("GetCommunityPostListHandler with invalid params", zap.Error(err))
+//		ResponseError(c, CodeInvalidParam)
+//		return
+//	}
+//
+//	// 获取数据
+//	data, err := logic.GetCommunityPostList(p.ParamPostList)
+//	if err != nil {
+//		zap.L().Error("logic.GetPostList() failed", zap.Error(err))
+//		ResponseError(c, CodeServerBusy)
+//		return
+//	}
+//	ResponseSuccess(c, data)
+//}
 
 /*
 "title":"study go make me happy",

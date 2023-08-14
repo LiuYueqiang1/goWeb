@@ -227,3 +227,17 @@ func GetCommunityPostList(p *models.ParamPostList) (data []*models.ApiPostDetail
 	}
 	return
 }
+
+// GetPostListNew 将两个查询逻辑合二为一的函数
+func GetPostListNew(p *models.ParamPostList) (data []*models.ApiPostDetail, err error) {
+	// 根据请求参数的不同，执行不同的逻辑
+	if p.CommunityID == 0 {
+		data, err = GetPostList2(p)
+	} else {
+		data, err = GetCommunityPostList(p)
+	}
+	if err != nil {
+		zap.L().Error("GetPostListNew failed", zap.Error(err))
+	}
+	return
+}

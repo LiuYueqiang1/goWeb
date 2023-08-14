@@ -1,6 +1,8 @@
 package routes
 
 import (
+	swaggerFiles "github.com/swaggo/files"
+	gs "github.com/swaggo/gin-swagger"
 	"net/http"
 
 	"bluebell.com/bluebell/controllers"
@@ -8,6 +10,8 @@ import (
 
 	"bluebell.com/bluebell/logger"
 	"github.com/gin-gonic/gin"
+
+	_ "bluebell.com/bluebell/docs" // 千万不要忘了导入把你上一步生成的docs
 )
 
 func Setup(mode string) *gin.Engine {
@@ -16,7 +20,7 @@ func Setup(mode string) *gin.Engine {
 	}
 
 	r := gin.New()
-
+	r.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
 	v1 := r.Group("/api/v1")
@@ -56,3 +60,5 @@ func Setup(mode string) *gin.Engine {
 
 	return r
 }
+
+// http://127.0.0.1:8081/swagger/index.html
