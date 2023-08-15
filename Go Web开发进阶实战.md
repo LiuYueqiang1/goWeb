@@ -1933,3 +1933,96 @@ http://127.0.0.1:8081/api/v1/post
 http://127.0.0.1:8081/api/v1/posts2?page=1&size=2&order=score
 ```
 
+## 75 docker
+
+### 在```bluebell```下创建```Dockerfile```
+
+```go
+FROM golang:alpine AS builder
+
+# 为我们的镜像设置必要的环境变量
+ENV GO111MODULE=on \
+    GOPROXY=https://goproxy.cn,direct \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+# 移动到工作目录：/build
+WORKDIR /build
+
+# 将代码复制到容器中
+COPY . .
+
+# 将我们的代码编译成二进制可执行文件 app
+RUN go build -o bluebull_app .
+
+###################
+# 接下来创建一个小镜像
+###################
+FROM scratch
+
+# 从builder镜像中把静态文件拷贝到当前目录
+COPY ./templates /templates
+COPY ./static /static
+
+# 从builder镜像中把配置文件拷贝到当前目录
+COPY ./conf /conf
+
+# 从builder镜像中把/dist/app 拷贝到当前目录
+COPY --from=builder /build/bluebull_app /
+
+# 声明服务端口 不起作用
+EXPOSE 8081
+
+# 需要运行的命令
+ENTRYPOINT ["/bluebull_app", "conf/config.yaml"]
+```
+
+使用dokcer中的数据库，不然会无法连接数据库
+
+docker安装mysql
+
+[Docker 安装 MySQL | 菜鸟教程 (runoob.com)](https://www.runoob.com/docker/docker-install-mysql.html)
+
+```docker pull mysql:latest  ```
+
+```docker run -itd --name mysql-bluebull -p 3306:3306 -e MYSQL_ROOT_PASSWORD=961024 mysql ```
+
+### 修改```yaml```文件
+
+```yaml
+name: "web_app"
+mode: "dev"
+port: 8081
+version: "v0.0.1"
+start_time: "2023-07-01"
+machine_id: 1
+
+auth:
+  jwt_expire: 8760
+
+log:
+  level: "debug"
+  filename: "web_bluebell.log"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+mysql:
+  host: mysql-bluebull
+  port: 3306
+  user: "root"
+  password: "961024"
+  dbname: "bluebell"
+  max_open_conns: 200
+  max_idle_conns: 50
+redis:
+  host: redis507
+  port: 6379
+  password: ""
+  db: 0
+  pool_size: 100
+```
+
+```docker build . -t bluebull_app```
+
+```docker run --link=mysql-bluebull:mysql-bluebull --link=redis507:redis507 -p 8888:8081 bluebull-app ```

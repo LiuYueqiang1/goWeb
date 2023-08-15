@@ -15,7 +15,7 @@ log:
   max_age: 30
   max_backups: 7
 mysql:
-  host: "127.0.0.1"
+  host: mysql-bluebull
   port: 3306
   user: "root"
   password: "961024"
@@ -23,7 +23,7 @@ mysql:
   max_open_conns: 200
   max_idle_conns: 50
 redis:
-  host: "127.0.0.1"
+  host: redis507
   port: 6379
   password: ""
   db: 0
