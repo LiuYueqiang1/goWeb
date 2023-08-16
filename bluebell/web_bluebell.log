@@ -837,3 +837,14 @@
 {"level":"INFO","time":"2023-08-15T21:15:12.155+0800","caller":"logger/logger.go:88","msg":"/api/v1/post/14344928624644096","status":200,"method":"GET","path":"/api/v1/post/14344928624644096","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203","errors":"","cost":0.0116957}
 {"level":"INFO","time":"2023-08-15T21:15:19.945+0800","caller":"bluebell/main.go:109","msg":"Shutdown Server ..."}
 {"level":"INFO","time":"2023-08-15T21:15:19.946+0800","caller":"bluebell/main.go:117","msg":"Server exiting"}
+{"level":"INFO","time":"2023-08-16T09:18:03.503+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-08-16T09:18:03.528+0800","caller":"bluebell/main.go:60","msg":"logger init success..."}
+{"level":"ERROR","time":"2023-08-16T09:18:14.828+0800","caller":"mysql/mysql.go:28","msg":"connect DB failed","error":"dial tcp: lookup mysql-bluebull: no such host"}
+{"level":"INFO","time":"2023-08-16T09:18:58.969+0800","caller":"logger/logger.go:55","msg":"init logger success"}
+{"level":"DEBUG","time":"2023-08-16T09:18:58.977+0800","caller":"bluebell/main.go:60","msg":"logger init success..."}
+{"level":"INFO","time":"2023-08-16T09:19:11.993+0800","caller":"logger/logger.go:88","msg":"/","status":200,"method":"GET","path":"/","query":"","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203","errors":"","cost":0.1001893}
+{"level":"INFO","time":"2023-08-16T09:19:14.225+0800","caller":"logger/logger.go:88","msg":"/api/v1/posts2","status":200,"method":"GET","path":"/api/v1/posts2","query":"page=1&order=time","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203","errors":"","cost":1.942654}
+{"level":"INFO","time":"2023-08-16T09:19:15.220+0800","caller":"logger/logger.go:88","msg":"/api/v1/posts2","status":200,"method":"GET","path":"/api/v1/posts2","query":"page=1&order=score","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203","errors":"","cost":0.0478142}
+{"level":"INFO","time":"2023-08-16T09:19:16.083+0800","caller":"logger/logger.go:88","msg":"/api/v1/posts2","status":200,"method":"GET","path":"/api/v1/posts2","query":"page=1&order=time","ip":"127.0.0.1","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203","errors":"","cost":0.1438509}
+{"level":"INFO","time":"2023-08-16T09:19:21.635+0800","caller":"bluebell/main.go:109","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2023-08-16T09:19:21.636+0800","caller":"bluebell/main.go:117","msg":"Server exiting"}

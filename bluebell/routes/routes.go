@@ -23,7 +23,7 @@ func Setup(mode string) *gin.Engine {
 	r.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
-	r.LoadHTMLFiles("F:\\goland\\go_project\\go_Web81\\goWeb\\bluebell\\templates\\index.html")
+	r.LoadHTMLFiles("./templates/index.html")
 	r.Static("static", "./static")
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
