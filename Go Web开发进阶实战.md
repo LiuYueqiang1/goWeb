@@ -1302,7 +1302,18 @@ func LoginHandler(c *gin.Context) {
 
 ## 39基于cookie-Session和Token的认证模式介绍
 
- ![image-20230708194029464](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194029464.png)
+### 用户认证
+
+HTTP是一个无状态的协议，一次请求结束后，下次再发送服务器就不知道这个请求是谁发来的（同一个IP不代表同一个用户），在Web应用中，用户的认证和鉴权是非常重要的一环，实践中有多种可用方案。
+
+**Cookie-Session认证模式**
+
+Web应用发展初期的Cookie-Session会话管理方式如下：
+
+- 客户端是用户名、密码进行认证
+- 服务端验证用户名、密码正确后生成并存储Session，将SessionID通过Cookie返回给客户端
+- 客户端访问需要认证的接口时在Cookie中携带SessionID
+- 服务端通过SessionID查找Session并进行健全，返回给客户端需要的数据
 
 ![image-20230708194219582](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20230708194219582.png)
 
